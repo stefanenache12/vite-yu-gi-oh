@@ -1,16 +1,12 @@
 <script>
 import CardComponent from './CardComponent.vue';
+import { store } from '../store.js';
 
 export default {
     name: "MainComponent",
     data() {
         return {
-        }
-    },
-    props: {
-        cards: {
-            type: Array,
-            default: [],
+            store
         }
     },
     methods: {
@@ -26,18 +22,20 @@ export default {
     <main>
         <div class="container pt-4 pb-4">
             <div> 
-                <select class="form-select w-25 text-center" aria-label="Select archetype">
-                    <option value="1">Alien</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <form action="" @submit.prevent="$emit('search')">
+                    <select v-model="store.searchArchetype" class="form-select w-25 text-center" aria-label="Select archetype">
+                        <option value="" selected>Select Archetype...</option>
+                        <option v-for="archetype in store.archetypes" :value="archetype.archetype_name">{{ archetype.archetype_name }}</option>
+                    </select>
+                    <button type="submit" class="btn btn-light">Search Archetype</button>
+                </form>
             </div>
             <div class="cards-container p-4 mt-3">
                 <div class="result">
-                    <h4 class="p-4">Found {{ this.cards.length }} cards</h4>
+                    <h4 class="p-4">Found {{ this.store.cards.length }} cards</h4>
                 </div>
                 <div class="row">
-                    <div class="col-3" v-for="(card,i) in cards" :key="i">
+                    <div class="col-3" v-for="(card,i) in store.cards" :key="i">
                         <CardComponent :card="card"/>
                     </div>
                 </div>
